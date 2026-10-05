@@ -12,7 +12,6 @@ import {
   pickContinueId,
   questionsBySection,
   TOTAL_ALL_QUESTIONS,
-  TOTAL_QUESTIONS,
 } from "@/lib/pte";
 import {
   attemptedToday,
@@ -130,13 +129,14 @@ function HomePage() {
             );
             const sectionTotal = questionsBySection(section).length;
             const attempted = types.reduce((n, t) => n + (typeStats.get(t)?.attemptedIds ?? 0), 0);
+            const pct = sectionTotal > 0 ? Math.round((attempted / sectionTotal) * 100) : 0;
             return (
               <section key={section} className="rounded-2xl border border-border bg-card">
                 <div className="flex items-center justify-between gap-3 border-b border-border/60 p-4">
                   <div>
                     <h2 className="font-serif text-lg font-semibold">{meta.label}</h2>
                     <p className="text-xs text-muted-foreground">
-                      {sectionTotal} questões · {attempted} iniciadas
+                      {sectionTotal} questões · {attempted} iniciadas · {pct}%
                     </p>
                   </div>
                   <Link
@@ -145,6 +145,14 @@ function HomePage() {
                   >
                     Abrir seção →
                   </Link>
+                </div>
+                <div className="px-4 pt-3">
+                  <div className="h-1.5 overflow-hidden rounded-full bg-secondary">
+                    <div
+                      className="h-full rounded-full bg-primary/70 transition-all"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
                 </div>
                 <ul className="divide-y divide-border/40">
                   {types.map((t) => {
@@ -190,8 +198,8 @@ function HomePage() {
         </div>
 
         <p className="mt-6 text-center text-xs text-muted-foreground">
-          {TOTAL_QUESTIONS} questões de Read Aloud com prática completa; os demais motores chegam
-          nas próximas fases.
+          Todos os 16 task types estão prontos para prática — seu progresso fica salvo neste
+          navegador.
         </p>
       </main>
     </div>

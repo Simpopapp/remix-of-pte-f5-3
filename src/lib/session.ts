@@ -102,9 +102,7 @@ export function buildMixedQueue(
       .sort((a, b) => a.k[0] - b.k[0] || a.k[1] - b.k[1] || a.r - b.r);
     if (!list.length) continue;
     const scored = list.filter((x) => x.k[0] >= 0);
-    const avg = scored.length
-      ? scored.reduce((s, x) => s + x.k[0], 0) / scored.length
-      : -1; // nunca treinado = mais fraco
+    const avg = scored.length ? scored.reduce((s, x) => s + x.k[0], 0) / scored.length : -1; // nunca treinado = mais fraco
     picks.push({ type, avg, ids: list.slice(0, n).map((x) => x.q.id) });
   }
   picks.sort((a, b) => a.avg - b.avg);

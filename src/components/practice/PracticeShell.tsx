@@ -56,7 +56,10 @@ function SessionBanner({ qid }: { qid: string }) {
         ) : null}
       </div>
       <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-secondary">
-        <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${pct}%` }} />
+        <div
+          className="h-full rounded-full bg-primary transition-all"
+          style={{ width: `${pct}%` }}
+        />
       </div>
     </div>
   );

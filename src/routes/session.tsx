@@ -25,12 +25,12 @@ export const Route = createFileRoute("/session")({
   },
   head: () => ({
     meta: [
-      { title: "Sessão de treino — ReadAloud Trainer" },
+      { title: "Sessão de treino — PTE Master Hub" },
       {
         name: "description",
         content: "Treine 5, 10 ou 15 questões seguidas, com fila inteligente e resumo final.",
       },
-      { property: "og:title", content: "Sessão de treino — ReadAloud Trainer" },
+      { property: "og:title", content: "Sessão de treino — PTE Master Hub" },
       {
         property: "og:description",
         content: "Treine 5, 10 ou 15 questões seguidas, com fila inteligente e resumo final.",
@@ -59,6 +59,16 @@ function SessionPage() {
     const avg = graded.length
       ? Math.round(graded.reduce((sum, r) => sum + (r.score ?? 0), 0) / graded.length)
       : null;
+    const byType = new Map<TaskType, { sum: number; n: number }>();
+    for (const r of session.results) {
+      if (r.score === null) continue;
+      const q = getAllQuestion(r.qid);
+      if (!q) continue;
+      const cur = byType.get(q.taskType) ?? { sum: 0, n: 0 };
+      cur.sum += r.score;
+      cur.n += 1;
+      byType.set(q.taskType, cur);
+    }
     return (
       <div className="min-h-dvh bg-background text-foreground">
         <TopNav />
@@ -80,6 +90,19 @@ function SessionPage() {
               </p>
             )}
           </div>
+
+          {byType.size > 1 && (
+            <div className="flex flex-wrap gap-2">
+              {[...byType.entries()].map(([t, v]) => (
+                <span
+                  key={t}
+                  className="rounded-full bg-secondary px-3 py-1 text-xs tabular-nums text-muted-foreground"
+                >
+                  {TYPE_META[t].label}: {Math.round(v.sum / v.n)}% · {v.n} questão(ões)
+                </span>
+              ))}
+            </div>
+          )}
 
           <section className="overflow-hidden rounded-2xl border border-border bg-card">
             {session.results.map((r, i) => {
@@ -238,11 +261,21 @@ function SessionPage() {
                   <div key={t} className="flex items-center justify-between gap-3 py-2">
                     <span className="text-sm">{TYPE_META[t].label}</span>
                     <div className="flex items-center gap-2">
-                      <Button size="sm" variant="outline" aria-label={`Menos ${TYPE_META[t].label}`} onClick={() => set(n - 1)}>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        aria-label={`Menos ${TYPE_META[t].label}`}
+                        onClick={() => set(n - 1)}
+                      >
                         −
                       </Button>
                       <span className="w-6 text-center text-sm tabular-nums">{n}</span>
-                      <Button size="sm" variant="outline" aria-label={`Mais ${TYPE_META[t].label}`} onClick={() => set(n + 1)}>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        aria-label={`Mais ${TYPE_META[t].label}`}
+                        onClick={() => set(n + 1)}
+                      >
                         +
                       </Button>
                     </div>

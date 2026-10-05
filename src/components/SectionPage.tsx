@@ -31,6 +31,8 @@ const statusOptions: { value: StatusFilter; label: string }[] = [
   { value: "starred", label: "★ Difíceis" },
 ];
 
+const PAGE_SIZE = 50;
+
 export function SectionPage({ section }: { section: Section }) {
   const app = useAppState();
   const stats = useMemo(() => computeStats(app), [app]);
@@ -39,6 +41,7 @@ export function SectionPage({ section }: { section: Section }) {
   const [search, setSearch] = useState("");
   const [type, setType] = useState<TaskType | "">("");
   const [status, setStatus] = useState<StatusFilter>("all");
+  const [limit, setLimit] = useState(PAGE_SIZE);
 
   const meta = SECTION_META[section];
   const sectionTypes = (Object.keys(TYPE_META) as TaskType[]).filter(
@@ -60,6 +63,8 @@ export function SectionPage({ section }: { section: Section }) {
       return true;
     });
   }, [pool, type, search, status, stats, app.bookmarks]);
+
+  const visible = useMemo(() => filtered.slice(0, limit), [filtered, limit]);
 
   return (
     <div className="min-h-dvh bg-background text-foreground">
@@ -134,13 +139,19 @@ export function SectionPage({ section }: { section: Section }) {
               <input
                 type="search"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setLimit(PAGE_SIZE);
+                }}
                 placeholder="Buscar no texto das questões…"
                 className="min-w-56 flex-1 rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-2 focus-visible:outline-ring"
               />
               <select
                 value={type}
-                onChange={(e) => setType(e.target.value as TaskType | "")}
+                onChange={(e) => {
+                  setType(e.target.value as TaskType | "");
+                  setLimit(PAGE_SIZE);
+                }}
                 aria-label="Filtrar por tipo"
                 className="rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground"
               >
@@ -153,7 +164,10 @@ export function SectionPage({ section }: { section: Section }) {
               </select>
               <select
                 value={status}
-                onChange={(e) => setStatus(e.target.value as StatusFilter)}
+                onChange={(e) => {
+                  setStatus(e.target.value as StatusFilter);
+                  setLimit(PAGE_SIZE);
+                }}
                 aria-label="Filtrar por status"
                 className="rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground"
               >
@@ -164,7 +178,9 @@ export function SectionPage({ section }: { section: Section }) {
                 ))}
               </select>
             </div>
-            <p className="text-xs text-muted-foreground">{filtered.length} questão(ões) exibidas</p>
+            <p className="text-xs text-muted-foreground">
+              {visible.length} de {filtered.length} questão(ões) exibidas
+            </p>
           </div>
 
           {filtered.length === 0 ? (
@@ -178,6 +194,7 @@ export function SectionPage({ section }: { section: Section }) {
                     setSearch("");
                     setType("");
                     setStatus("all");
+                    setLimit(PAGE_SIZE);
                   }}
                 >
                   Limpar filtros
@@ -186,7 +203,7 @@ export function SectionPage({ section }: { section: Section }) {
             </div>
           ) : (
             <div>
-              {filtered.map((q, i) => (
+              {visible.map((q, i) => (
                 <SectionRow
                   key={q.id}
                   question={q}
@@ -196,6 +213,17 @@ export function SectionPage({ section }: { section: Section }) {
                   onToggleBookmark={toggleBookmark}
                 />
               ))}
+              {filtered.length > visible.length && (
+                <div className="border-t border-border/60 p-4 text-center">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setLimit((l) => l + PAGE_SIZE)}
+                  >
+                    Mostrar mais ({filtered.length - visible.length} restantes)
+                  </Button>
+                </div>
+              )}
             </div>
           )}
         </section>
