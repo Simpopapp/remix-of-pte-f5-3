@@ -34,10 +34,11 @@ Base: 2.032 questões / 16 tipos em `.opencode/pte-json/`.
   - [x] Dados: `lst_smw` pte-lst_sm-40c6f847 tinha `answer` vazio — corrigido para 0 em `src/data/pte/` e `.opencode/pte-json/`
   - [x] TYPE_META `ready: true` para os 16 tipos; dispatcher `/practice` cobre todos
   - Gates: vitest 75/75 · tsgo limpo · lint 0 erros · build OK · preview :8080 verificado (mcq_single/multi com resultado e net score, SMW com lacuna, lst_summary com timer 10:00, seção Reading com "PRATICAR" nos 2 tipos)
-- [ ] Fase 6 (P2) — Hub e sessões híbridas
-  - [ ] Sessão mista entre tipos (fila, shuffle inteligente, resumo)
-  - [ ] Filtros úteis + paginação na lista; dashboard 360°
-  - [ ] Backup JSON cobrindo todos os tipos
+- [x] Fase 6 (P2) — Hub e sessões híbridas
+  - [x] Sessão mista entre tipos (fila, shuffle inteligente, resumo) — resumo agora com média por task type
+  - [x] Filtros úteis + paginação na lista (50 por página, "Mostrar mais"); dashboard 360° (barras de progresso e % iniciadas por seção na home; Progresso mostra os 16 tipos com score unificado)
+  - [x] Backup JSON cobrindo todos os tipos (exportBackup/importBackup já versionados com attempts + taskType + metrics)
+  - Gates: vitest 75/75 · tsgo limpo · lint 0 erros · build OK · preview :8080 verificado (home com barras por seção, /listening paginação 50→100 via "Mostrar mais", /session com mista de 16 tipos)
 
 Regras: nada de auth/multiusuário; tudo local (localStorage); TTS via Web Speech API;
 verificação por vitest + tsc --noEmit + build + preview antes de fechar cada fase.
