@@ -184,35 +184,40 @@ function ProgressPage() {
               <p className="mt-3 text-sm text-muted-foreground">Nenhuma tentativa ainda.</p>
             ) : (
               <ul className="mt-3 space-y-1.5 text-sm">
-                {recent.map((a, i) => (
-                  <li
-                    key={`${a.qid}-${a.ts}-${i}`}
-                    className="flex items-center justify-between gap-2"
-                  >
-                    <span className="truncate text-muted-foreground">
-                      {new Date(a.ts).toLocaleString("pt-BR", {
-                        day: "2-digit",
-                        month: "2-digit",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                      {" · "}
-                      {a.qid.replace("pte-ra-", "")}
-                    </span>
-                    <span
-                      className={cn(
-                        "shrink-0 tabular-nums",
-                        a.contentScore === null
-                          ? "text-muted-foreground"
-                          : a.contentScore >= 90
-                            ? "text-success"
-                            : "text-warning",
-                      )}
+                {recent.map((a, i) => {
+                  const score = a.score ?? a.contentScore;
+                  return (
+                    <li
+                      key={`${a.qid}-${a.ts}-${i}`}
+                      className="flex items-center justify-between gap-2"
                     >
-                      {a.contentScore === null ? "sem score" : `${a.contentScore}% · ${a.wpm} ppm`}
-                    </span>
-                  </li>
-                ))}
+                      <span className="truncate text-muted-foreground">
+                        {new Date(a.ts).toLocaleString("pt-BR", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                        {" · "}
+                        {TYPE_META[a.taskType]?.label ?? a.taskType}
+                      </span>
+                      <span
+                        className={cn(
+                          "shrink-0 tabular-nums",
+                          score === null
+                            ? "text-muted-foreground"
+                            : score >= 90
+                              ? "text-success"
+                              : score >= 70
+                                ? "text-warning"
+                                : "text-destructive",
+                        )}
+                      >
+                        {score === null ? "sem score" : `${score}%`}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
             )}
           </section>
