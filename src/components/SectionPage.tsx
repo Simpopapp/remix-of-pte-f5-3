@@ -31,6 +31,8 @@ const statusOptions: { value: StatusFilter; label: string }[] = [
   { value: "starred", label: "★ Difíceis" },
 ];
 
+const PAGE_SIZE = 50;
+
 export function SectionPage({ section }: { section: Section }) {
   const app = useAppState();
   const stats = useMemo(() => computeStats(app), [app]);
@@ -39,6 +41,7 @@ export function SectionPage({ section }: { section: Section }) {
   const [search, setSearch] = useState("");
   const [type, setType] = useState<TaskType | "">("");
   const [status, setStatus] = useState<StatusFilter>("all");
+  const [limit, setLimit] = useState(PAGE_SIZE);
 
   const meta = SECTION_META[section];
   const sectionTypes = (Object.keys(TYPE_META) as TaskType[]).filter(
