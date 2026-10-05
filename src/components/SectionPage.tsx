@@ -64,6 +64,8 @@ export function SectionPage({ section }: { section: Section }) {
     });
   }, [pool, type, search, status, stats, app.bookmarks]);
 
+  const visible = useMemo(() => filtered.slice(0, limit), [filtered, limit]);
+
   return (
     <div className="min-h-dvh bg-background text-foreground">
       <TopNav />
@@ -167,7 +169,9 @@ export function SectionPage({ section }: { section: Section }) {
                 ))}
               </select>
             </div>
-            <p className="text-xs text-muted-foreground">{filtered.length} questão(ões) exibidas</p>
+            <p className="text-xs text-muted-foreground">
+              {visible.length} de {filtered.length} questão(ões) exibidas
+            </p>
           </div>
 
           {filtered.length === 0 ? (
