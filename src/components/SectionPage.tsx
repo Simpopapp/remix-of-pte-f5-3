@@ -139,13 +139,19 @@ export function SectionPage({ section }: { section: Section }) {
               <input
                 type="search"
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  setLimit(PAGE_SIZE);
+                }}
                 placeholder="Buscar no texto das questões…"
                 className="min-w-56 flex-1 rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus-visible:outline-2 focus-visible:outline-ring"
               />
               <select
                 value={type}
-                onChange={(e) => setType(e.target.value as TaskType | "")}
+                onChange={(e) => {
+                  setType(e.target.value as TaskType | "");
+                  setLimit(PAGE_SIZE);
+                }}
                 aria-label="Filtrar por tipo"
                 className="rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground"
               >
@@ -158,7 +164,10 @@ export function SectionPage({ section }: { section: Section }) {
               </select>
               <select
                 value={status}
-                onChange={(e) => setStatus(e.target.value as StatusFilter)}
+                onChange={(e) => {
+                  setStatus(e.target.value as StatusFilter);
+                  setLimit(PAGE_SIZE);
+                }}
                 aria-label="Filtrar por status"
                 className="rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground"
               >
