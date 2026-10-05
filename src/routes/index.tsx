@@ -12,7 +12,6 @@ import {
   pickContinueId,
   questionsBySection,
   TOTAL_ALL_QUESTIONS,
-  TOTAL_QUESTIONS,
 } from "@/lib/pte";
 import {
   attemptedToday,
