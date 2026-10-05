@@ -185,6 +185,7 @@ export function SectionPage({ section }: { section: Section }) {
                     setSearch("");
                     setType("");
                     setStatus("all");
+                    setLimit(PAGE_SIZE);
                   }}
                 >
                   Limpar filtros
@@ -193,7 +194,7 @@ export function SectionPage({ section }: { section: Section }) {
             </div>
           ) : (
             <div>
-              {filtered.map((q, i) => (
+              {visible.map((q, i) => (
                 <SectionRow
                   key={q.id}
                   question={q}
@@ -203,6 +204,17 @@ export function SectionPage({ section }: { section: Section }) {
                   onToggleBookmark={toggleBookmark}
                 />
               ))}
+              {filtered.length > visible.length && (
+                <div className="border-t border-border/60 p-4 text-center">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setLimit((l) => l + PAGE_SIZE)}
+                  >
+                    Mostrar mais ({filtered.length - visible.length} restantes)
+                  </Button>
+                </div>
+              )}
             </div>
           )}
         </section>
