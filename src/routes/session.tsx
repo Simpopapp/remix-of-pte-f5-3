@@ -261,11 +261,21 @@ function SessionPage() {
                   <div key={t} className="flex items-center justify-between gap-3 py-2">
                     <span className="text-sm">{TYPE_META[t].label}</span>
                     <div className="flex items-center gap-2">
-                      <Button size="sm" variant="outline" aria-label={`Menos ${TYPE_META[t].label}`} onClick={() => set(n - 1)}>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        aria-label={`Menos ${TYPE_META[t].label}`}
+                        onClick={() => set(n - 1)}
+                      >
                         −
                       </Button>
                       <span className="w-6 text-center text-sm tabular-nums">{n}</span>
-                      <Button size="sm" variant="outline" aria-label={`Mais ${TYPE_META[t].label}`} onClick={() => set(n + 1)}>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        aria-label={`Mais ${TYPE_META[t].label}`}
+                        onClick={() => set(n + 1)}
+                      >
                         +
                       </Button>
                     </div>
