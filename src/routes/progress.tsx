@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { TopNav } from "@/components/TopNav";
 import { Button } from "@/components/ui/button";
-import { questions } from "@/lib/pte";
+import { TYPE_META, questions } from "@/lib/pte";
 import {
   computeStats,
   computeStreak,
