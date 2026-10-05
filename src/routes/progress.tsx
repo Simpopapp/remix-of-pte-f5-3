@@ -16,15 +16,15 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/progress")({
   head: () => ({
     meta: [
-      { title: "Progresso — ReadAloud Trainer" },
+      { title: "Progresso — PTE Master Hub" },
       {
         name: "description",
-        content: "Seu histórico de leituras, ritmo e evolução no Read Aloud do PTE.",
+        content: "Seu histórico, ritmo e evolução nos 16 task types do PTE.",
       },
-      { property: "og:title", content: "Progresso — ReadAloud Trainer" },
+      { property: "og:title", content: "Progresso — PTE Master Hub" },
       {
         property: "og:description",
-        content: "Seu histórico de leituras e evolução no Read Aloud do PTE.",
+        content: "Seu histórico e evolução nos 16 task types do PTE.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
